@@ -27,6 +27,7 @@ export const crearLibro = async (req: Request, res: Response) => {
     } catch (e) {
       console.error("No se pudo borrar archivo temporal:", e);
     }
+
     const libro = repo.create({
       nombre,
       autor,
