@@ -4,6 +4,7 @@ import { AppDataSource } from "./config/datasource";
 import libroRoutes from "./routes/libros.routes";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -17,6 +18,8 @@ app.use("/libros", libroRoutes);
 AppDataSource.initialize()
   .then(() => {
     console.log("Base de datos conectada");
-    app.listen(3000, () => console.log("Servidor en http://localhost:3000"));
+    app.listen(PORT, () =>
+      console.log(`Servidor escuchando en http://0.0.0.0:${PORT}`)
+    );
   })
   .catch((err) => console.error("Error al conectar DB", err));
