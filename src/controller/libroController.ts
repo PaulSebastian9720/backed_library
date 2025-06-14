@@ -1,32 +1,38 @@
 import { AppDataSource } from "./../config/datasource";
 import { Libro } from "../entity/libro";
 import { Request, Response } from "express";
-import { subirImagen } from "../service/cloud.service";
 import fs from "fs";
 import { Like } from "typeorm";
+import { subirImagen, subirPDF } from "../service/cloud.service";
 
 const repo = AppDataSource.getRepository(Libro);
 
 export const crearLibro = async (req: Request, res: Response) => {
   try {
     const { nombre, autor, descripcion, anioPublicacion } = req.body;
-    const file = req.file;
+    const files = req.files as {
+      imagen?: Express.Multer.File[];
+      pdf?: Express.Multer.File[];
+    };
 
-    if (!file) {
-      console.error("Error: No se recibió archivo");
-      res.status(400).json({ msg: "Imagen requerida" });
+    if (!files?.imagen?.[0]) {
+      res.status(400).json({ msg: "Se requiere una imagen" });
       return;
     }
 
-    const imagenUrl = await subirImagen(
-      file.path,
-      `libros/${file.filename}.jpg`
-    );
-    try {
-      await fs.promises.unlink(file.path);
-    } catch (e) {
-      console.error("No se pudo borrar archivo temporal:", e);
+    const imagenFile = files.imagen[0];
+    const pdfFile = files?.pdf?.[0];
+
+    const imagenUrl = await subirImagen(imagenFile.path);
+
+    let pdfUrl = "";
+    if (pdfFile) {
+      pdfUrl = await subirPDF(pdfFile.path);
     }
+
+    const deletePromises = [fs.promises.unlink(imagenFile.path)];
+    if (pdfFile) deletePromises.push(fs.promises.unlink(pdfFile.path));
+    await Promise.all(deletePromises);
 
     const libro = repo.create({
       nombre,
@@ -34,7 +40,9 @@ export const crearLibro = async (req: Request, res: Response) => {
       descripcion,
       anioPublicacion,
       imagenUrl,
+      pdfUrl,
     });
+
     await repo.save(libro);
     res.json(libro);
   } catch (err) {

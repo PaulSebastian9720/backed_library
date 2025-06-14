@@ -15,10 +15,13 @@ export class Libro {
   @Column("text")
   descripcion!: string;
 
-  @Column(
-    { nullable: true }
-  )
+  @Column()
   imagenUrl!: string;
+
+  @Column({
+    nullable: true,
+  })
+  pdfUrl!: string;
 
   @Column()
   anioPublicacion!: number;
