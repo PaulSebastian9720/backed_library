@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy-assets",
+    "copy-assets": "cp key.json build/key.json && cp .env build/.env",
+    "copy-assets-win": "cpx key.json buildw/key.prod.json && cpx .env buildw/.env.prod",
     "start": "node build/index.js",
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts"
   },
@@ -27,6 +29,7 @@
     "@types/express": "^5.0.3",
     "@types/multer": "^1.4.13",
     "@types/node": "^24.0.1",
+    "cpx": "^1.5.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
