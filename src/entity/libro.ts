@@ -16,13 +16,5 @@ export class Libro {
   descripcion!: string;
 
   @Column()
-  imagenUrl!: string;
-
-  @Column({
-    nullable: true,
-  })
-  pdfUrl!: string;
-
-  @Column()
   anioPublicacion!: number;
 }

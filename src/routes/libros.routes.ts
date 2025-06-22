@@ -10,16 +10,8 @@ import {
 } from "../controller/libroController";
 
 const router = Router();
-const upload = multer({ dest: "uploads/" });
 
-router.post(
-  "/",
-  upload.fields([
-    { name: "imagen", maxCount: 1 },
-    { name: "pdf", maxCount: 1 },
-  ]),
-  crearLibro
-);
+router.post("/", crearLibro);
 router.get("/", obtenerLibros);
 router.get("/:id", obtenerLibro);
 router.get("/nombre/:nombre", obtenerLibrosPorNombre);

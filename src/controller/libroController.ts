@@ -1,46 +1,21 @@
 import { AppDataSource } from "./../config/datasource";
 import { Libro } from "../entity/libro";
 import { Request, Response } from "express";
-import fs from "fs";
+// import fs from "fs";
 import { Like } from "typeorm";
-import { subirImagen, subirPDF } from "../service/cloud.service";
+// import { subirImagen, subirPDF } from "../service/cloud.service";
 
 const repo = AppDataSource.getRepository(Libro);
 
 export const crearLibro = async (req: Request, res: Response) => {
   try {
     const { nombre, autor, descripcion, anioPublicacion } = req.body;
-    const files = req.files as {
-      imagen?: Express.Multer.File[];
-      pdf?: Express.Multer.File[];
-    };
-
-    if (!files?.imagen?.[0]) {
-      res.status(400).json({ msg: "Se requiere una imagen" });
-      return;
-    }
-
-    const imagenFile = files.imagen[0];
-    const pdfFile = files?.pdf?.[0];
-
-    const imagenUrl = await subirImagen(imagenFile.path);
-
-    let pdfUrl = "";
-    if (pdfFile) {
-      pdfUrl = await subirPDF(pdfFile.path);
-    }
-
-    const deletePromises = [fs.promises.unlink(imagenFile.path)];
-    if (pdfFile) deletePromises.push(fs.promises.unlink(pdfFile.path));
-    await Promise.all(deletePromises);
 
     const libro = repo.create({
       nombre,
       autor,
       descripcion,
       anioPublicacion,
-      imagenUrl,
-      pdfUrl,
     });
 
     await repo.save(libro);
