@@ -13,7 +13,7 @@ app.use((err: any, req: Request, res: Response, next: Function) => {
   res.status(500).json({ msg: "Error interno del servidor" });
 });
 
-app.use("/libros", libroRoutes);
+app.use("/api/libros", libroRoutes);
 
 AppDataSource.initialize()
   .then(() => {

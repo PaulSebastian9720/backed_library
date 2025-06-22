@@ -9,13 +9,14 @@ const repo = AppDataSource.getRepository(Libro);
 
 export const crearLibro = async (req: Request, res: Response) => {
   try {
-    const { nombre, autor, descripcion, anioPublicacion } = req.body;
-
+    const { nombre, autor, descripcion, anioPublicacion, imagenUrl } = req.body;
+    console.log(imagenUrl)
     const libro = repo.create({
       nombre,
       autor,
       descripcion,
       anioPublicacion,
+      imagenUrl
     });
 
     await repo.save(libro);
