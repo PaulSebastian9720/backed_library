@@ -37,21 +37,21 @@ spec:
             httpGet:
               path: /api/libros/health
               port: 3000
-            initialDelaySeconds: 10
+            initialDelaySeconds: 5
             periodSeconds: 5
             failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /api/libros/health
               port: 3000
-            initialDelaySeconds: 15
+            initialDelaySeconds: 5
             periodSeconds: 10
             failureThreshold: 3
           resources:
             requests:
-              memory: "256Mi"
+              memory: "206Mi"
               cpu: "250m"
             limits:
-              memory: "512Mi"
+              memory: "206Mi"
               cpu: "500m"
       restartPolicy: Always
