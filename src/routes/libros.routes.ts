@@ -11,7 +11,7 @@ import {
 
 const router = Router();
 
-router.get('/api/libros/load', (req, res) => {
+router.get('/load', (req, res) => {
   const start = Date.now();
   while (Date.now() - start < 2000) {
     Math.sqrt(Math.random() * Math.random());
