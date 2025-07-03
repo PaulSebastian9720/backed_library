@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  app:
+    image: paulsebastian97/applibros
+    container_name: servidor_applibros
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=applibros_user
+      - DB_PASSWORD=applibros_pass
+      - DB_NAME=applibros_db
+    depends_on:
+      - postgres
+    networks:
+      - appnet
+    restart: always
+
+  postgres:
+    image: postgres:17
+    container_name: postgres_applibros
+    environment:
+      POSTGRES_USER: applibros_user
+      POSTGRES_PASSWORD: applibros_pass
+      POSTGRES_DB: applibros_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - appnet
+    restart: always
+
+volumes:
+  pgdata:
+
+networks:
+  appnet:
+    driver: bridge

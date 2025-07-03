@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    io.kompose.service: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: postgres
+    spec:
+      containers:
+        - name: postgres-applibros
+          image: postgres:17
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          env:
+            - name: POSTGRES_DB
+              value: applibros_db
+            - name: POSTGRES_PASSWORD
+              value: applibros_pass
+            - name: POSTGRES_USER
+              value: applibros_user
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pgdata
+            - mountPath: /docker-entrypoint-initdb.d
+              name: postgres-cm1
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - applibros_user
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - applibros_user
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      restartPolicy: Always
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: pgdata
+        - name: postgres-cm1
+          configMap:
+            name: postgres-cm1

@@ -15,8 +15,8 @@ export const crearLibro = async (req: Request, res: Response) => {
       nombre,
       autor,
       descripcion,
-      anioPublicacion,
-      imagenUrl
+      aniopublicacion: anioPublicacion,
+      imagenurl: imagenUrl
     });
 
     await repo.save(libro);

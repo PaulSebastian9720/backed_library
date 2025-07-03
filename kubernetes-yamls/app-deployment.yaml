@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: servidor-applibros
+          image: paulsebastian97/applibros
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: DB_HOST
+              value: postgres
+            - name: DB_NAME
+              value: applibros_db
+            - name: DB_PASSWORD
+              value: applibros_pass
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              value: applibros_user
+            - name: NODE_ENV
+              value: production
+          readinessProbe:
+            httpGet:
+              path: /api/libros/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /api/libros/health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      restartPolicy: Always

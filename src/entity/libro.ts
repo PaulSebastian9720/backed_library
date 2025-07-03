@@ -1,4 +1,3 @@
-// src/entity/Libro.ts
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
@@ -16,8 +15,8 @@ export class Libro {
   descripcion!: string;
 
   @Column()
-  anioPublicacion!: number;
+  aniopublicacion!: number;
 
   @Column()
-  imagenUrl!: string;
+  imagenurl!: string;
 }

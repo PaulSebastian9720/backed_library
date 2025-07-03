@@ -1,0 +1,16 @@
+# Ignorar node_modules locales
+node_modules
+
+# Ignorar carpeta de salida del compilador (será generada dentro del contenedor)
+build
+
+# Ignorar archivos temporales y logs
+*.log
+*.env
+*.DS_Storedoc
+
+# Ignorar pruebas y configs locales
+coverage
+.env.*
+.vscode
+.idea

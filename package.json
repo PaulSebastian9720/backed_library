@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && npm run copy-assets",
+    "build": "tsc",
     "copy-assets": "cp key.json build/key.json && cp .env build/.env",
     "copy-assets-win": "cpx key.json buildw/key.prod.json && cpx .env buildw/.env.prod",
     "start": "node build/index.js",

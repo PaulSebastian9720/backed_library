@@ -11,6 +11,18 @@ import {
 
 const router = Router();
 
+router.get('/api/libros/load', (req, res) => {
+  const start = Date.now();
+  while (Date.now() - start < 2000) {
+    Math.sqrt(Math.random() * Math.random());
+  }
+  res.send('Carga alta simulada por 2 segundos');
+});
+
+router.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 router.post("/", crearLibro);
 router.get("/", obtenerLibros);
 router.get("/:id", obtenerLibro);

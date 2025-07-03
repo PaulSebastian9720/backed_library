@@ -4,3 +4,5 @@
 /.env.local
 /uploads
 /key.json
+/sql
+/run.py
